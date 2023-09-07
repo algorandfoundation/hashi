@@ -1,0 +1,97 @@
+version: '3.4'
+
+services:
+
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    volumes:
+      - ./volumes/logs:/vault/logs
+      - ./volumes/file:/vault/file
+      - ./volumes/config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.json
+
+  dwallet-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: dwallet-api-dev
+    working_dir: /opt/app
+    command: ['npm', 'run', 'start:dev']
+    container_name: dwallet-api
+    env_file:
+      - .env
+    environment:
+        - loglevel=none
+    volumes:
+        - .:/opt/app/
+        - /opt/app/node_modules
+        - /opt/app/volumes
+    ports:
+        - "3000:8080"
+    depends_on:
+      - vault
+    networks: 
+        - wallet
+
+networks:
+  wallet:
+    external: false
+    driver: bridge
+
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:7.0.1
+  #   container_name: zookeeper
+  #   hostname: zookeeper
+  #   environment:
+  #     ZOOKEEPER_CLIENT_PORT: 2181
+  #     ZOOKEEPER_TICK_TIME: 2000
+  #   networks: 
+  #       - wallet
+
+  # kafka-0:
+  #   image: confluentinc/cp-kafka:7.0.1
+  #   container_name: kafka-broker-0
+  #   ports:
+  #   # To learn about configuring Kafka for access across networks see
+  #   # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
+  #     - "9093:9092"
+  #   depends_on:
+  #     - zookeeper
+  #   environment:
+  #     KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+  #     # KAFKA_ADVERTISED_HOST_NAME: kafka-broker-0 # docker-machine ip
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #     # KAFKA_CREATE_TOPICS: "cardano-events:1:1"
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker-0:9092,PLAINTEXT_HOST://localhost:9093
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     # KAFKA_ADVERTISED_PORT: 9092
+  #   networks: 
+  #     - wallet
+
+  # init-kafka:
+  #   image: confluentinc/cp-kafka:7.0.1
+  #   depends_on:
+  #     - kafka-0
+  #   entrypoint: [ '/bin/sh', '-c' ]
+  #   command: |
+  #     "
+  #     # blocks until kafka is reachable
+  #     kafka-topics --bootstrap-server kafka-broker-0:9092 --list
+
+  #     echo -e 'Creating kafka topics'
+  #     kafka-topics --bootstrap-server kafka-broker-0:9092 --create --if-not-exists --topic key-create --replication-factor 1 --partitions 1
+
+  #     kafka-topics --bootstrap-server kafka-broker-0:9092 --create --if-not-exists --topic sign-data --replication-factor 1 --partitions 1
+
+  #     echo -e 'Successfully created the following topics:'
+  #     kafka-topics --bootstrap-server kafka-broker-0:9092 --list
+  #     "
+  #   networks:
+  #     - wallet
