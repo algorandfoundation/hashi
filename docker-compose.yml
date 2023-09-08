@@ -16,14 +16,14 @@ services:
       - IPC_LOCK
     entrypoint: vault server -config=/vault/config/vault.json
 
-  dwallet-api:
+  hashi-api:
     build:
       context: .
       dockerfile: ./Dockerfile
-    image: dwallet-api-dev
+    image: hashi-api-dev
     working_dir: /opt/app
     command: ['npm', 'run', 'start:dev']
-    container_name: dwallet-api
+    container_name: hashi-api
     env_file:
       - .env
     environment:
