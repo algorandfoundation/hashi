@@ -6,5 +6,6 @@ tsconfig.build.tsbuildinfo
 .idea/
 package-lock.json
 data/
-volumes/
+volumes/logs
+volumes/file
 vault-seal-keys.json
