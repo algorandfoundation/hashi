@@ -77,3 +77,185 @@ The following is the JSON Schema for a Pay Transaction. The schema is:
 }
 ```
 
+### Keyreg change-online Transaction Schema
+
+The following is the JSON Schema for a Pay Transaction. The schema is:
+
+```schema
+{
+  "type": "object",
+  "properties": {
+    "snd": {
+        "type": "Uint8Array",
+        "description": "Sender's public key, 32 bytes",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "fee": {
+        "type": "number",
+        "description": "Fee to pay, in microAlgos",
+        "minimum": 1000
+    },
+    "fv": {
+        "type": "number",
+        "description": "First valid round",
+        "minimum": 0
+    },
+    "lv": {
+        "type": "number",
+        "description": "Last valid round",
+        "minimum": 0
+    },
+    "gh": {
+        "type": "Uint8Array",
+        "description": "Genesis hash",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "votekey": {
+        "type": "Uint8Array",
+        "description": "Voting key",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "selkey": {
+        "type": "Uint8Array",
+        "description": "Selection key",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "sprfkey": {
+        "type": "Uint8Array",
+        "description": "State proof key",
+        "minLength": 64,
+        "maxLength": 64
+    },
+    "votefst": {
+        "type": "number",
+        "description": "First participation round",
+        "minimum": 0
+    },
+    "votelst": {
+        "type": "number",
+        "description": "Last participation round",
+        "minimum": 0
+    },
+    "votekd": {
+        "type": "number",
+        "description": "Voting key dilution",
+        "minimum": 1
+    }
+  },
+  "required": [
+    "snd",
+    "fee",
+    "fv",
+    "lv",
+    "gh",
+    "votekey",
+    "selkey",
+    "sprfkey",
+    "votefst",
+    "votelst",
+    "votekd"
+  ]
+}
+```
+
+### Keyreg change-offline Transaction Schema
+
+The following is the JSON Schema for a Pay Transaction. The schema is:
+
+```schema
+{
+  "type": "object",
+  "properties": {
+    "snd": {
+        "type": "Uint8Array",
+        "description": "Sender's public key, 32 bytes",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "fee": {
+        "type": "number",
+        "description": "Fee to pay, in microAlgos",
+        "minimum": 1000
+    },
+    "fv": {
+        "type": "number",
+        "description": "First valid round",
+        "minimum": 0
+    },
+    "lv": {
+        "type": "number",
+        "description": "Last valid round",
+        "minimum": 0
+    },
+    "gh": {
+        "type": "Uint8Array",
+        "description": "Genesis hash",
+        "minLength": 32,
+        "maxLength": 32
+    },
+  },
+  "required": [
+    "snd",
+    "fee",
+    "fv",
+    "lv",
+    "gh"
+  ]
+}
+```
+
+### Keyreg non-participation Transaction Schema
+
+The following is the JSON Schema for a Pay Transaction. The schema is:
+
+```schema
+{
+  "type": "object",
+  "properties": {
+    "snd": {
+        "type": "Uint8Array",
+        "description": "Sender's public key, 32 bytes",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "fee": {
+        "type": "number",
+        "description": "Fee to pay, in microAlgos",
+        "minimum": 1000
+    },
+    "fv": {
+        "type": "number",
+        "description": "First valid round",
+        "minimum": 0
+    },
+    "lv": {
+        "type": "number",
+        "description": "Last valid round",
+        "minimum": 0
+    },
+    "gh": {
+        "type": "Uint8Array",
+        "description": "Genesis hash",
+        "minLength": 32,
+        "maxLength": 32
+    },
+    "nonpart": {
+        "type": "boolean",
+        "description": "Set to 'true' to mark 'snd' account as not participating"
+    }
+  },
+  "required": [
+    "snd",
+    "fee",
+    "fv",
+    "lv",
+    "gh",
+    "nonpart"
+  ]
+}
+```
+
