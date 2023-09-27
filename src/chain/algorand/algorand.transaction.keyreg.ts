@@ -7,13 +7,13 @@ export class KeyregTransaction {
 	fv: number
 	lv: number
 	note?: Uint8Array
-    votekey?: Uint8Array
-    selkey?: Uint8Array
-    sprfkey?: Uint8Array
-    votefst?: number
-    votelst?: number
-    votekd?: number
-    nonpart?: boolean
+	votekey?: Uint8Array
+	selkey?: Uint8Array
+	sprfkey?: Uint8Array
+	votefst?: number
+	votelst?: number
+	votekd?: number
+	nonpart?: boolean
 	gen: string
 	gh: Uint8Array
 
@@ -31,13 +31,13 @@ export interface IKeyregTxBuilder {
 	addFirstValidRound(firstValid: number): IKeyregTxBuilder
 	addLastValidRound(lastValid: number): IKeyregTxBuilder
 	addNote(note: string, encoding?: BufferEncoding): IKeyregTxBuilder
-    addVoteKey(voteKey: string, encoding?: BufferEncoding): IKeyregTxBuilder
-    addSelectionKey(selectionKey: string, encoding?: BufferEncoding): IKeyregTxBuilder
-    addStateProofKey(stateProofKey: string, encoding?: BufferEncoding): IKeyregTxBuilder
-    addVoteFirst(voteFirst: number): IKeyregTxBuilder
-    addVoteLast(voteLast: number): IKeyregTxBuilder
-    addVoteKeyDilution(voteKeyDilution: number): IKeyregTxBuilder
-    addNonParticipation(nonParticipation: boolean): IKeyregTxBuilder
+	addVoteKey(voteKey: string, encoding?: BufferEncoding): IKeyregTxBuilder
+	addSelectionKey(selectionKey: string, encoding?: BufferEncoding): IKeyregTxBuilder
+	addStateProofKey(stateProofKey: string, encoding?: BufferEncoding): IKeyregTxBuilder
+	addVoteFirst(voteFirst: number): IKeyregTxBuilder
+	addVoteLast(voteLast: number): IKeyregTxBuilder
+	addVoteKeyDilution(voteKeyDilution: number): IKeyregTxBuilder
+	addNonParticipation(nonParticipation: boolean): IKeyregTxBuilder
 	get(): KeyregTransaction
 }
 
@@ -77,40 +77,40 @@ export class KeyregTxBuilder implements IKeyregTxBuilder {
 		return this
 	}
 
-    addVoteKey(voteKey: string, encoding: BufferEncoding = "base64"): IKeyregTxBuilder {
-        this.tx.votekey = Buffer.from(voteKey, encoding)
-        return this
-    }
+	addVoteKey(voteKey: string, encoding: BufferEncoding = "base64"): IKeyregTxBuilder {
+		this.tx.votekey = Buffer.from(voteKey, encoding)
+		return this
+	}
 
-    addSelectionKey(selectionKey: string, encoding: BufferEncoding = "base64"): IKeyregTxBuilder {
-        this.tx.selkey = Buffer.from(selectionKey, encoding)
-        return this
-    }
+	addSelectionKey(selectionKey: string, encoding: BufferEncoding = "base64"): IKeyregTxBuilder {
+		this.tx.selkey = Buffer.from(selectionKey, encoding)
+		return this
+	}
 
-    addStateProofKey(stateProofKey: string, encoding: BufferEncoding = "base64"): IKeyregTxBuilder {
-        this.tx.sprfkey = Buffer.from(stateProofKey, encoding)
-        return this
-    }
+	addStateProofKey(stateProofKey: string, encoding: BufferEncoding = "base64"): IKeyregTxBuilder {
+		this.tx.sprfkey = Buffer.from(stateProofKey, encoding)
+		return this
+	}
 
-    addVoteFirst(voteFirst: number): IKeyregTxBuilder {
-        this.tx.votefst = voteFirst
-        return this
-    }
+	addVoteFirst(voteFirst: number): IKeyregTxBuilder {
+		this.tx.votefst = voteFirst
+		return this
+	}
 
-    addVoteLast(voteLast: number): IKeyregTxBuilder {
-        this.tx.votelst = voteLast
-        return this
-    }
+	addVoteLast(voteLast: number): IKeyregTxBuilder {
+		this.tx.votelst = voteLast
+		return this
+	}
 
-    addVoteKeyDilution(voteKeyDilution: number): IKeyregTxBuilder {
-        this.tx.votekd = voteKeyDilution
-        return this
-    }
+	addVoteKeyDilution(voteKeyDilution: number): IKeyregTxBuilder {
+		this.tx.votekd = voteKeyDilution
+		return this
+	}
 
-    addNonParticipation(nonParticipation: boolean): IKeyregTxBuilder {
-        this.tx.nonpart = nonParticipation
-        return this
-    }
+	addNonParticipation(nonParticipation: boolean): IKeyregTxBuilder {
+		this.tx.nonpart = nonParticipation
+		return this
+	}
 
 	get(): KeyregTransaction {
 		return this.tx
