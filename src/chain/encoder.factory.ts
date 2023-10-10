@@ -1,4 +1,4 @@
-import { AlgorandEncoder } from "./algorand/algorand.encoder"
+import { AlgorandEncoder } from "@algorandfoundation/algo-models"
 import { Encoder } from "./encoder.role"
 
 export class EncoderFactory {

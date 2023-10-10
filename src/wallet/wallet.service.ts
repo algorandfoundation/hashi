@@ -58,6 +58,9 @@ export class WalletService implements OnModuleInit {
 			}
 		)
 
+		// log raw request in curl
+		Logger.debug(result.request, "WalletService.submitTransaction")
+
 		return result.data.txId
 	}
 

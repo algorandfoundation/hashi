@@ -5,12 +5,11 @@ import { WalletService } from "./wallet.service"
 import { VaultModule } from "src/vault/vault.module"
 import { VaultService } from "src/vault/vault.service"
 import { ChainModule } from "src/chain/chain.module"
-import { AlgorandEncoder } from "src/chain/algorand/algorand.encoder"
 import { ConfigModule } from "@nestjs/config"
 
 @Module({
 	imports: [HttpModule, VaultModule, ChainModule, ConfigModule.forRoot()],
 	controllers: [Wallet],
-	providers: [WalletService, VaultService, AlgorandEncoder],
+	providers: [WalletService, VaultService],
 })
 export class WalletModule {}

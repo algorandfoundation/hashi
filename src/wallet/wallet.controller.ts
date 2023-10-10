@@ -63,9 +63,9 @@ export class Wallet {
 	}
 
 	/**
-	 * 
-	 * @param chain 
-	 * @returns 
+	 *
+	 * @param chain
+	 * @returns
 	 */
 	encoder(chain: "algorand" | "other" = "algorand") {
 		return EncoderFactory.getEncoder(chain)

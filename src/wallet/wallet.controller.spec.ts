@@ -3,13 +3,11 @@ import createMockInstance from "jest-create-mock-instance"
 import * as bip39 from "bip39"
 import algosdk from "algosdk"
 import { WalletService } from "./wallet.service"
-import { AlgorandEncoder } from "../chain/algorand/algorand.encoder"
 import { ConfigService } from "@nestjs/config"
 import { randomBytes } from "crypto"
-import { AlgorandTransactionCrafter } from "../chain/algorand/algorand.transaction.crafter"
+import { AlgorandTransactionCrafter, AlgorandEncoder } from "@algorandfoundation/algo-models"
 
 describe("Wallet Controller", () => {
-	let algoEncoder: AlgorandEncoder = new AlgorandEncoder()
 	let controller: Wallet
 	let walletServiceMock: jest.Mocked<WalletService>
 	let configServiceMock: jest.Mocked<ConfigService>
@@ -98,7 +96,7 @@ describe("Wallet Controller", () => {
 		expect(result).toEqual(new Uint8Array(signature))
 	})
 
-	it("\(OK) encoder()", async () => {
+	it("(OK) encoder()", async () => {
 		const encoder = controller.encoder()
 		expect(encoder).toBeDefined()
 		expect(encoder).not.toBeNull()
