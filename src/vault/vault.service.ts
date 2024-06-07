@@ -25,6 +25,27 @@ export class VaultService {
 	}
 
 	/**
+	 * 
+	 * @param byteLength 
+	 * @returns 
+	 */
+	// async randomBytes(byteLength: number): Promise<Uint8Array> {
+	// 	const res: AxiosResponse = await this.httpService.axiosRef.post(
+	// 		`http://localhost:8200/v1/sys/tools/random/${byteLength}`,
+	// 		{
+	// 			format: "hex",
+	// 		},
+	// 		{
+	// 			headers: {
+	// 				"X-Vault-Token": this.latestToken,
+	// 			},
+	// 		}
+	// 	)
+
+	// 	return new Uint8Array(Buffer.from(res.data.data.random_bytes, "hex"))
+	// }
+
+	/**
 	 *
 	 * @param keyName
 	 * @returns

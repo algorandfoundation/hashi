@@ -3,13 +3,11 @@ import createMockInstance from "jest-create-mock-instance"
 import * as bip39 from "bip39"
 import algosdk from "algosdk"
 import { WalletService } from "./wallet.service"
-import { AlgorandEncoder } from "../chain/algorand/algorand.encoder"
 import { ConfigService } from "@nestjs/config"
 import { randomBytes } from "crypto"
-import { AlgorandTransactionCrafter } from "../chain/algorand/algorand.transaction.crafter"
+import { AlgorandTransactionCrafter, AlgorandEncoder } from "@algorandfoundation/algo-models"
 
 describe("Wallet Controller", () => {
-	let algoEncoder: AlgorandEncoder = new AlgorandEncoder()
 	let controller: Wallet
 	let walletServiceMock: jest.Mocked<WalletService>
 	let configServiceMock: jest.Mocked<ConfigService>
@@ -22,27 +20,31 @@ describe("Wallet Controller", () => {
 
 	afterEach(() => {})
 
-	it.skip(`\(OK) BIP39 generation`, () => {
+	it.only(`\(OK) BIP39 generation`, () => {
 		// ### 25 words ###
 		const acc = algosdk.generateAccount()
-		// const acc: algosdk.Account = algosdk.mnemonicToSecretKey("mne")
 		const passphrase = algosdk.secretKeyToMnemonic(acc.sk)
-		console.log(`My address: ${acc.addr}`)
 		console.log(`My passphrase: ${passphrase}`)
 
 		const seed: Uint8Array = algosdk.seedFromMnemonic(passphrase)
 		console.log("seed: ", Buffer.from(seed).toString("hex"))
 
-		const mnemonic: string = algosdk.mnemonicFromSeed(seed)
-		console.log("mnemonic: ", mnemonic)
+		const algo25Mnemonic: string = algosdk.mnemonicFromSeed(seed)
+		console.log("mnemonic: ", algo25Mnemonic)
+
+		// algo25 => seed => algo25 again
+		expect(algo25Mnemonic).toBe(passphrase)
 
 		// ##### BIP39 ####
 		const bip39Mnemonic: string = bip39.entropyToMnemonic(Buffer.from(seed).toString("hex"))
 		console.log("bip39Mnemonic: ", bip39Mnemonic)
 
-		const entropy: string = bip39.mnemonicToEntropy(bip39Mnemonic)
-		console.log("entropy: ", entropy)
+		// different words from both standards
+		expect(bip39Mnemonic).not.toBe(algo25Mnemonic)
 
+		const entropy: string = bip39.mnemonicToEntropy(bip39Mnemonic)
+
+		// same seed from bip39 as from algo25
 		expect(entropy).toBe(Buffer.from(seed).toString("hex"))
 	})
 
@@ -98,7 +100,10 @@ describe("Wallet Controller", () => {
 		expect(result).toEqual(new Uint8Array(signature))
 	})
 
-	it("\(OK) encoder()", async () => {
+	/**
+	 * 
+	 */
+	it("(OK) encoder()", async () => {
 		const encoder = controller.encoder()
 		expect(encoder).toBeDefined()
 		expect(encoder).not.toBeNull()

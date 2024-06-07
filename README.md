@@ -51,6 +51,9 @@ $ docker-compose up -d vault
 # Configure Vault at http://localhost:8200
 # Then configure VAULT_TOKEN in .env
 
+# Init and unseal Vault
+$ yarn run vault:init
+
 # Run the wallet REPL / CLI
 yarn start:dev -- --entryFile repl
 ``` 
