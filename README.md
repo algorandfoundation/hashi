@@ -88,12 +88,14 @@ If an error message is displayed along side the LOG messages, please check the `
 
 ## 4. Commands to craft, encode, sign and POST a transaction
 
+Submit each command individually. This is just a demonstration of the steps involved in crafting and sending a transaction.
+
 ```ts
-w = get(Wallet)
+w = get(Wallet) 
 
-addr = await w.getAddress()
+addr = await w.getAddress() 
 
-crafter = w.craft()
+crafter = w.craft() 
 
 tx = crafter.pay(100000, addr, addr).addFirstValidRound(46005730).addLastValidRound(46005808).get()
 
