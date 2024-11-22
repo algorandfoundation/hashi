@@ -1,5 +1,17 @@
 # Vault Wallet
 
+This repo is a demonstration of a wallet that uses Hashicorp Vault as a Key Management Service (KMS) to store and manage cryptographic keys. The wallet is a CLI application that allows users to interact with the wallet and KMS to craft, sign and submit transactions to the Algorand network.
+
+## Why Hashicorp Vault
+
+Managing and securing cryptographic keys is a fundamental requirement for any system and not special to blockchain applications. 
+Hashicorp Vault is a popular and widely used KMS that provides a secure and scalable way to manage keys and secrets.
+
+### Natively supports Ed25519 signature scheme
+
+A big advantage of Vault in Algorand application design is that it doesn't require the integration of extra modules to support non-native signature schemes (i.e secp256k1).
+Ed25519 is natively supported and Vault's security model is maintained without relying on external modules.
+
 ## Transaction Steps
 - Craft tx Model
 - Encode
@@ -9,6 +21,11 @@
 - POST
 
 ## Conceptual Architecture
+
+This pattern ensure that applications comply with the principle of **ISOLATION** between appliation space and "trusted" space; i.e the KMS.
+Most web3 applications handle cryptographic keys in-memory and in the same run-time space as the application. This is a security risk as the keys can be easily compromised by an attacker who gains access to the application's memory space.
+
+This ensures that if the application is compromised, the keys are still secure and cannot be accessed by the attacker.
 
 ```mermaid
     C4Context
@@ -37,6 +54,18 @@
 - Data Models
 - Encoding
 - API
+
+### Algo Models
+
+This project relies on [algo-models](https://www.npmjs.com/package/@algorandfoundation/algo-models) to craft the transaction model.
+
+#### Why not the AlgoSDK? 
+
+The AlgoSDK is a great tool for interacting with the Algorand network. However, the transaction models
+used as part of it's API's are not the real "raw" transaction models that are sent to the network. The SDK abstracts some datal model handling, which might look easier for the developer to handle, but
+this means that if we want to integrate an agnostic, traditional KMS that doesn't understand how to manipulate the data models, it wouldn't produce valid signatures.
+
+More information about this decision can be found [here](https://github.com/algorandfoundation/algo-models)
 
 
 ## 1. Setup / Boot Vault
@@ -90,20 +119,53 @@ If an error message is displayed along side the LOG messages, please check the `
 
 Submit each command individually. This is just a demonstration of the steps involved in crafting and sending a transaction.
 
+
+### Get Wallet Instance
 ```ts
 w = get(Wallet) 
 
+```
+
+### Generate / Get Public Key from Vault and encode it into an Algorand Address
+```ts
 addr = await w.getAddress() 
+```
 
+### Get Transaction Crafter Instance
+
+```ts
 crafter = w.craft() 
+```
 
-tx = crafter.pay(100000, addr, addr).addFirstValidRound(46005730).addLastValidRound(46005808).get()
+### Craft & Get PAY Transaction
 
+```ts
+tx = crafter.pay(100000, addr, addr)
+    .addFirstValidRound(46005730) //adjust this value
+    .addLastValidRound(46005808) //adjust this value
+    .get()
+```
+
+### Encode Transaction
+
+```ts
 encoded = tx.encode()
+```
 
+### Sign encoded payload
+    
+```ts
 sig = await w.sign(encoded)
+```
 
+### Attach Signature to Encoded Payload
+
+```ts
 ready = crafter.addSignature(encoded, sig)
+```
 
+### Submit Transaction
+
+```ts
 await w.submitTransaction(ready)
 ```
