@@ -113,6 +113,7 @@
   },
   "peerDependencies": {
     "mkdirp": "^0.5.4",
+    "minimist": "1.2.8",
     "node-fetch": "^2.6.1"
   }
 }
