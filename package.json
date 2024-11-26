@@ -112,8 +112,8 @@
     "testEnvironment": "node"
   },
   "peerDependencies": {
-    "mkdirp": "^0.5.4",
     "minimist": "1.2.8",
+    "mkdirp": "^0.5.4",
     "node-fetch": "^2.6.1"
   }
 }
