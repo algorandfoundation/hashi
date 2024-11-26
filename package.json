@@ -89,7 +89,8 @@
     "tsconfig-paths": "4.2.0"
   },
   "resolutions": {
-    "tslib": "2.7.0"
+    "tslib": "2.7.0",
+    "minimist": "1.2.8"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -113,6 +114,7 @@
   },
   "peerDependencies": {
     "minimist": "1.2.8",
+    "optimist": "0.6.1",
     "mkdirp": "^0.5.4",
     "node-fetch": "^2.6.1"
   }
