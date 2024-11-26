@@ -89,7 +89,7 @@
     "tsconfig-paths": "4.2.0"
   },
   "resolutions": {
-    "tslib": "1.11.2"
+    "tslib": "2.7.0"
   },
   "jest": {
     "moduleFileExtensions": [
