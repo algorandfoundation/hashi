@@ -79,7 +79,10 @@ $ docker-compose up -d vault
 
 # Init and unseal Vault
 $ yarn run vault:init
-``` 
+
+# Activate Transit Engine
+$ yarn vault:transit
+```
 
 ## 2. Setup Proper ENVIRONMENT VARIABLES
 
